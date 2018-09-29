@@ -49,4 +49,4 @@ class QCustomWidget(QWidget):
         self.fileNameLabel.setText(text)
 
     def setIcon(self, imagePath):
-        self.iconQLabel.setPixmap(QPixmap(imagePath))
+        self.iconLabel.setPixmap(QPixmap(imagePath))

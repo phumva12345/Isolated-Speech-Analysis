@@ -1,10 +1,12 @@
 import sys
 import wave
+import os
 
 from Graph import *
 from Spectrogram import *
 from Request import *
 from QCustomWidget import *
+from scipy.io import wavfile as wav
 
 class myListWidget(QListWidget):
    def Clicked(self,item):
@@ -26,6 +28,16 @@ class ISA_UI(QMainWindow):
         loader = QUiLoader()
         form = loader.load("ISA_UI.ui")
         self.setCentralWidget(form)
+
+        # Add icon
+        # self.icon_label = form.findChild(QFrame, "icon_frame")
+        # self.icon_label.setStyleSheet("QFrame{border-image:url("+"pics/icon.png"+")};")
+
+        # Add title
+        self.icon_label = form.findChild(QTextEdit, "textEdit_2")
+        self.icon_label.setText("\tProcessed Requests")
+        self.icon_label.setStyleSheet("* { background-color: rgba(0, 0, 0, 0); }")
+        self.icon_label.setReadOnly(True)
 
         # Set up graph layouts
         self.layout_1 = form.findChild(QVBoxLayout,"layout_1")
@@ -54,6 +66,17 @@ class ISA_UI(QMainWindow):
         self.layout_1.takeAt(0)
         self.layout_2.takeAt(0)
 
+    def generate_icon(self, req):
+        rate, data = wav.read(req.getFileName())
+
+        plt.plot(data)
+        plt.axis('off')
+        figure = plt.gcf()
+
+        figure.set_size_inches(2, 0.48)
+        plt.savefig(req.getFileName() + ".png", dpi = 100, transparent=True)
+        plt.clf()
+
     def update_text_edit(self, req):
         text = ""
         spf = wave.open(req.getFileName(),'r')
@@ -72,6 +95,11 @@ class ISA_UI(QMainWindow):
 
     def update_list_widget(self, req):
         myQCustomQWidget = QCustomWidget(req)
+
+        # Set up an icon
+        self.generate_icon(req)
+        myQCustomQWidget.setIcon(req.getFileName() + ".png")
+
         myQListWidgetItem = QListWidgetItem(self.myQListWidget)
         myQListWidgetItem.setSizeHint(myQCustomQWidget.sizeHint())
 
@@ -81,6 +109,8 @@ class ISA_UI(QMainWindow):
 
         # Update to the newest row
         self.myQListWidget.setCurrentRow(int(req.id) - 1)
+
+        os.remove(req.getFileName() + ".png")
 
     def update_graph_layout(self, req):
         self.reset_layout()
