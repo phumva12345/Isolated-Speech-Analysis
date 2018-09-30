@@ -30,9 +30,10 @@ def hello():
 @app.route('/test/post', methods=['POST'])
 def update_request():
     # Call the UI application in Flask
-    w = FlaskThread._single.ui
-    
-    print(type(w))
+
+    w = FlaskThread._single.UI
+
+
     # check if the post request has the file part
     if 'file' not in request.files:
         return "No file"
@@ -46,8 +47,8 @@ def update_request():
     if file and allowed_file(file.filename):
         file_name = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], file_name))
-        w.test_request(file_name)
-        w.test(file_name)
+
+        w.signal.sigStr.emit(file_name)
         return "success"
 
 
@@ -57,13 +58,15 @@ class FlaskThread(QtCore.QThread):
     # Singleton Flask
     _single = None
 
-    def __init__(self, application,ui):
+
+    def __init__(self, application, UI):
         QtCore.QThread.__init__(self)
         if FlaskThread._single:
             raise FlaskThread._single
         FlaskThread._single = self
         self.application = application
-        self.ui = ui
+
+        self.UI = UI
 
     def __del__(self):
         self.wait()
@@ -74,9 +77,10 @@ class FlaskThread(QtCore.QThread):
 def start_GUI(application):
     qtApp = QApplication(sys.argv)
 
-    
+
     w = ISA_UI()
-    webapp = FlaskThread(application,w)
+    webapp = FlaskThread(application, w)
+
     webapp.start()
     w.show()
 
