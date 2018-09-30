@@ -3,7 +3,26 @@ import random
 from flask import Flask,request, url_for, render_template,jsonify 
 from werkzeug.utils import secure_filename
 
+from ISA_UI
+from PySide2 import QtCore
 
+
+
+PORT = 5000
+ROOT_URL = 'http://localhost:{}'.format(PORT)
+
+
+class FlaskThread(QtCore.QThread):
+    def __init__(self, application):
+        QtCore.QThread.__init__(self)
+        self.application = application
+
+    def __del__(self):
+        self.wait()
+
+    def run(self):
+        self.application.run(port=5000)
+        
 UPLOAD_FOLDER = '../Desktop/kuay'
 ALLOWED_EXTENSIONS = set(['wav','aac'])
 app = Flask(__name__)
@@ -15,6 +34,9 @@ def allowed_file(filename):
 @app.route("/")
 def hello():
     return "Hello World!"
+
+
+
 
 @app.route('/test/post', methods=['POST'])
 def get_tasks():
@@ -30,9 +52,9 @@ def get_tasks():
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                FlaskThread.application.update_request('../Desktop/kuay'+filename)
                 return "success"
     
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
+

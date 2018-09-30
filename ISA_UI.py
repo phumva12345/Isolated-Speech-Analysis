@@ -6,6 +6,7 @@ from Graph import *
 from Spectrogram import *
 from Request import *
 from QCustomWidget import *
+from server import *
 from scipy.io import wavfile as wav
 
 class myListWidget(QListWidget):
@@ -130,7 +131,10 @@ class ISA_UI(QMainWindow):
 def main():
     app = QApplication(sys.argv)
     w = ISA_UI()
+    fla = FlaskThread(w)
+    
     w.show()
+    fla.start()
     return app.exec_()
 
 if __name__ == "__main__":
