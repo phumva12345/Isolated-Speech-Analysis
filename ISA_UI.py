@@ -8,10 +8,6 @@ from Request import *
 from QCustomWidget import *
 from scipy.io import wavfile as wav
 
-class myListWidget(QListWidget):
-   def Clicked(self,item):
-      QMessageBox.information(self, "ListWidget", "You clicked: "+item.text())
-
 class ISA_UI(QMainWindow):
 
     def __init__(self, parent = None):
