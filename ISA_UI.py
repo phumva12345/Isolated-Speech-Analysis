@@ -7,6 +7,7 @@ from Spectrogram import *
 from Request import *
 from QCustomWidget import *
 from scipy.io import wavfile as wav
+from MySignal import *
 
 class ISA_UI(QMainWindow):
 
@@ -15,6 +16,10 @@ class ISA_UI(QMainWindow):
         QMainWindow.__init__(self, None)
         self.setMinimumSize(1280, 720)
         self.setMaximumSize(1280, 720)
+
+        # Init signal
+        self.signal = MySignal()
+        self.signal.sigStr.connect(self.update_request)
 
         # Set up main UI
         self.parent = parent
