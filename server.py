@@ -1,31 +1,23 @@
 import os
 import random
-from flask import Flask,request, url_for, render_template,jsonify 
+
+from flask import Flask,request, url_for, render_template,jsonify
 from werkzeug.utils import secure_filename
+from PySide2 import QtCore
+from ISA_UI import *
 
 from ISA_UI
 from PySide2 import QtCore
-
 
 
 PORT = 5000
 ROOT_URL = 'http://localhost:{}'.format(PORT)
 
 
-class FlaskThread(QtCore.QThread):
-    def __init__(self, application):
-        QtCore.QThread.__init__(self)
-        self.application = application
-
-    def __del__(self):
-        self.wait()
-
-    def run(self):
-        self.application.run(port=5000)
-        
-UPLOAD_FOLDER = '../Desktop/kuay'
-ALLOWED_EXTENSIONS = set(['wav','aac'])
 app = Flask(__name__)
+
+UPLOAD_FOLDER = ''
+ALLOWED_EXTENSIONS = set(['wav'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def allowed_file(filename):
@@ -54,7 +46,40 @@ def get_tasks():
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 FlaskThread.application.update_request('../Desktop/kuay'+filename)
                 return "success"
-    
 
 
+
+class FlaskThread(QtCore.QThread):
+    signal = QtCore.Signal(str)
+    _single = None
+    def __init__(self, application):
+        QtCore.QThread.__init__(self)
+        if FlaskThread._single:
+            raise FlaskThread._single
+        FlaskThread._single = self
+        self.application = application
+
+    def __del__(self):
+        self.wait()
+
+    def run(self):
+        self.application.run(port=PORT)
+
+def start_GUI(application):
+    qtApp = QApplication(sys.argv)
+
+    webapp = FlaskThread(application)
+
+    w = ISA_UI()
+    w.show()
+
+    qtApp.aboutToQuit.connect(webapp.terminate)
+    QApplication.setQuitOnLastWindowClosed(False)
+
+    webapp.start()
+
+    return qtApp.exec_()
+
+if __name__ == '__main__':
+    sys.exit(start_GUI(app))
 
