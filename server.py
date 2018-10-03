@@ -14,7 +14,7 @@ app = Flask(__name__)
 
 # Set recievable file
 UPLOAD_FOLDER = ''
-ALLOWED_EXTENSIONS = set(['wav'])
+ALLOWED_EXTENSIONS = set(['wav','acc'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def allowed_file(filename):

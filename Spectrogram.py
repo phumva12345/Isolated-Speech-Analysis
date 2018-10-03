@@ -4,8 +4,9 @@ from PySide2.QtUiTools import *
 from PySide2.QtWidgets import *
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.figure import Figure
-import matplotlib
+from matplotlib.figure import *
+from matplotlib.cm import coolwarm
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 import matplotlib.pyplot as plt
 
 from scipy import signal
@@ -35,11 +36,17 @@ class Spectrogram(FigureCanvas):
     def plot(self):
         sample_rate, samples = wavfile.read(self.file_name)
         frequencies, times, spectrogram = signal.spectrogram(samples, sample_rate)
+        logSpectrogram = np.log10(spectrogram)
 
         ax = self.figure.add_subplot(111)
-        ax.pcolormesh(times, frequencies, spectrogram)
+        im = ax.pcolormesh(times, frequencies/1000, logSpectrogram, cmap='viridis')
+
+        divider = make_axes_locatable(ax)
+        cax = divider.append_axes('right', size='5%', pad=0.05)
+        
+        self.figure.colorbar(im, cax=cax, orientation='vertical')
         ax.set_title('Spectrogram')
-        ax.set_ylabel('Frequency [Hz]')
+        ax.set_ylabel('Frequency [kHz]')
         ax.set_xlabel('Time [sec]')
         # props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
         # ax.text(0.82, 0.9, "x = Frequency [Hz]\ny = Time [sec]", transform=ax.transAxes, fontsize=14,\
