@@ -13,14 +13,16 @@ class QCustomWidget(QWidget):
         self.req = req
         self.textQVBoxLayout = QVBoxLayout()
         self.idLabel = QLabel()
-        self.dateTimeLabel = QLabel()
+        self.dateLabel = QLabel()
+        self.timeLabel = QLabel()
         self.fileNameLabel = QLabel()
         self.allQHBoxLayout = QHBoxLayout()
         self.iconLabel = QLabel()
 
         # Set up
         self.textQVBoxLayout.addWidget(self.idLabel)
-        self.textQVBoxLayout.addWidget(self.dateTimeLabel)
+        self.textQVBoxLayout.addWidget(self.dateLabel)
+        self.textQVBoxLayout.addWidget(self.timeLabel)
         # self.textQVBoxLayout.addWidget(self.fileNameLabel)
         self.allQHBoxLayout.addWidget(self.iconLabel, 0)
         self.allQHBoxLayout.addLayout(self.textQVBoxLayout, 1)
@@ -28,22 +30,29 @@ class QCustomWidget(QWidget):
 
         # Set default text
         self.setID("ID: " + self.req.getID())
-        self.setDateTime(self.req.getDate() + " " +self.req.getTime())
+        self.setDate(self.req.getDate())
+        self.setTime(self.req.getTime())
         self.setFileName(self.req.getFileName())
 
         # setStyleSheet
         self.idLabel.setStyleSheet('''
             color: rgb(51, 102, 153);
         ''')
-        self.dateTimeLabel.setStyleSheet('''
+        self.dateLabel.setStyleSheet('''
+            color: rgb(153, 51, 255);
+        ''')
+        self.timeLabel.setStyleSheet('''
             color: rgb(153, 51, 255);
         ''')
 
     def setID(self, text):
         self.idLabel.setText(text)
 
-    def setDateTime(self, text):
-        self.dateTimeLabel.setText(text)
+    def setDate(self, text):
+        self.dateLabel.setText(text)
+
+    def setTime(self, text):
+        self.timeLabel.setText(text)
 
     def setFileName(self, text):
         self.fileNameLabel.setText(text)
