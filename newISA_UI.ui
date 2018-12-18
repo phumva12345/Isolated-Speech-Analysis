@@ -370,7 +370,7 @@ p, li { white-space: pre-wrap; }
       <x>300</x>
       <y>580</y>
       <width>681</width>
-      <height>281</height>
+      <height>291</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="original"/>
@@ -431,7 +431,7 @@ p, li { white-space: pre-wrap; }
       <x>990</x>
       <y>580</y>
       <width>601</width>
-      <height>281</height>
+      <height>291</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="compare"/>

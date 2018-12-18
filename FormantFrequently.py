@@ -35,38 +35,37 @@ class FormantFrequently(FigureCanvas):
         self.plot(signal, sample_rate, formant_n)
 
     def plot(self, sig, sample_rate, formant_n):
-        frequencies, times, spectrogram = signal.spectrogram(sig, sample_rate)
-        fig, ax = plt.subplots()
-        ax = self.figure.add_subplot(111)
-        divider = make_axes_locatable(ax)
-        cax = divider.append_axes('right', size='5%', pad=0.05)
-        fig.subplots_adjust(left=0,right=1,bottom=0,top=1)
-        im = ax.pcolormesh(times, frequencies, np.log(spectrogram))
-        if formant_n is None:
-            ax.pcolormesh(times, frequencies, FeatureExtraction().formant_frequently(np.log(spectrogram), 0), cmap=plt.cm.Greys_r)
-            ax.pcolormesh(times, frequencies, FeatureExtraction().formant_frequently(np.log(spectrogram), 1), cmap=plt.cm.winter)
-            ax.pcolormesh(times, frequencies, FeatureExtraction().formant_frequently(np.log(spectrogram), 2), cmap=plt.cm.cool)
-            ax.pcolormesh(times, frequencies, FeatureExtraction().formant_frequently(np.log(spectrogram), 3), cmap=plt.cm.Greens_r)
-            ax.pcolormesh(times, frequencies, FeatureExtraction().formant_frequently(np.log(spectrogram), 4), cmap=plt.cm.summer)
-            ax.pcolormesh(times, frequencies, FeatureExtraction().formant_frequently(np.log(spectrogram), 5), cmap=plt.cm.Reds_r)
-        else:
-            ax.pcolormesh(times, frequencies, FeatureExtraction().formant_frequently(np.log(spectrogram), formant_n), cmap=plt.cm.Reds_r)
-        # ax.pcolormesh(times, frequencies, FeatureExtraction().formant_frequently(np.log(spectrogram), 1), cmap=plt.cm.spring)
-        ax.set_title('Formant Frequently')
-        ax.set_ylabel('Frequency [Hz]')
-        ax.set_xlabel('Time [sec]')
-        if formant_n is None:
-            purple_patch = mpatches.Patch(color='black', label='F0')
-            blue_patch = mpatches.Patch(color='blue', label='F1')
-            aqua_patch = mpatches.Patch(color='aqua', label='F2')
-            green_patch = mpatches.Patch(color='green', label='F3')
-            lightseagreen_patch = mpatches.Patch(color='lightseagreen', label='F4')
-            red_patch = mpatches.Patch(color='darkred', label='F5')
-            ax.legend(handles=[purple_patch, blue_patch, aqua_patch, green_patch, lightseagreen_patch, red_patch])
-        fig.colorbar(im, cax=cax)
-        # props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
-        # ax.text(0.82, 0.9, "x = Frequency [Hz]\ny = Time [sec]", transform=ax.transAxes, fontsize=14,\
-        #     verticalalignment='top', bbox=props)
+        try:
+            frequencies, times, spectrogram = signal.spectrogram(sig, sample_rate)
+            fig, ax = plt.subplots()
+            ax = self.figure.add_subplot(111)
+            divider = make_axes_locatable(ax)
+            cax = divider.append_axes('right', size='5%', pad=0.05)
+            fig.subplots_adjust(left=0,right=1,bottom=0,top=1)
+            im = ax.pcolormesh(times, frequencies, np.log(spectrogram))
+            if formant_n is None:
+                ax.pcolormesh(times, frequencies, FeatureExtraction().formant_frequently(np.log(spectrogram), 0), cmap=plt.cm.Greys_r)
+                ax.pcolormesh(times, frequencies, FeatureExtraction().formant_frequently(np.log(spectrogram), 1), cmap=plt.cm.winter)
+                ax.pcolormesh(times, frequencies, FeatureExtraction().formant_frequently(np.log(spectrogram), 2), cmap=plt.cm.cool)
+                ax.pcolormesh(times, frequencies, FeatureExtraction().formant_frequently(np.log(spectrogram), 3), cmap=plt.cm.Greens_r)
+                ax.pcolormesh(times, frequencies, FeatureExtraction().formant_frequently(np.log(spectrogram), 4), cmap=plt.cm.summer)
+                ax.pcolormesh(times, frequencies, FeatureExtraction().formant_frequently(np.log(spectrogram), 5), cmap=plt.cm.Reds_r)
+            else:
+                ax.pcolormesh(times, frequencies, FeatureExtraction().formant_frequently(np.log(spectrogram), formant_n), cmap=plt.cm.Reds_r)
+            ax.set_title('Formant Frequently')
+            ax.set_ylabel('Frequency [Hz]')
+            ax.set_xlabel('Time [sec]')
+            if formant_n is None:
+                purple_patch = mpatches.Patch(color='black', label='F0')
+                blue_patch = mpatches.Patch(color='blue', label='F1')
+                aqua_patch = mpatches.Patch(color='aqua', label='F2')
+                green_patch = mpatches.Patch(color='green', label='F3')
+                lightseagreen_patch = mpatches.Patch(color='lightseagreen', label='F4')
+                red_patch = mpatches.Patch(color='darkred', label='F5')
+                ax.legend(handles=[purple_patch, blue_patch, aqua_patch, green_patch, lightseagreen_patch, red_patch])
+            fig.colorbar(im, cax=cax)
+        except ValueError as err:
+            print(err)
 
         self.draw()
 

@@ -49,20 +49,20 @@ class Spectrogram(FigureCanvas):
     #     self.draw()
 
     def plot(self, sig, sample_rate):
-        frequencies, times, spectrogram = signal.spectrogram(sig, sample_rate)
-        fig, ax = plt.subplots()
-        ax = self.figure.add_subplot(111)
-        divider = make_axes_locatable(ax)
-        cax = divider.append_axes('right', size='5%', pad=0.05)
-        fig.subplots_adjust(left=0,right=1,bottom=0,top=1)
-        im = ax.pcolormesh(times, frequencies, np.log(spectrogram))
-        fig.colorbar(im, cax=cax)
-        ax.set_title('Spectrogram')
-        ax.set_ylabel('Frequency [Hz]')
-        ax.set_xlabel('Time [sec]')
-        # props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
-        # ax.text(0.82, 0.9, "x = Frequency [Hz]\ny = Time [sec]", transform=ax.transAxes, fontsize=14,\
-        #     verticalalignment='top', bbox=props)
+        try:
+            frequencies, times, spectrogram = signal.spectrogram(sig, sample_rate)
+            fig, ax = plt.subplots()
+            ax = self.figure.add_subplot(111)
+            divider = make_axes_locatable(ax)
+            cax = divider.append_axes('right', size='5%', pad=0.05)
+            fig.subplots_adjust(left=0,right=1,bottom=0,top=1)
+            im = ax.pcolormesh(times, frequencies, np.log(spectrogram))
+            fig.colorbar(im, cax=cax)
+            ax.set_title('Spectrogram')
+            ax.set_ylabel('Frequency [Hz]')
+            ax.set_xlabel('Time [sec]')
+        except ValueError as err:
+            print(err)
 
         self.draw()
 

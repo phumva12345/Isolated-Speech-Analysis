@@ -99,8 +99,8 @@ class ISA_UI(QMainWindow):
         self.textEdit = form.findChild(QTextEdit,"textEdit")
         self.textEdit.setReadOnly(True)
 
-        # self.update_request('robot-1.wav')
-        # self.update_request('robot-2.wav')
+        self.update_request('robot-1.wav')
+        self.update_request('robot-2.wav')
         self.update_request('robot-3.wav')
         self.update_request('robot-4.wav')
 

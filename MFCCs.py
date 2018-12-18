@@ -34,22 +34,22 @@ class MFCCs(FigureCanvas):
         self.plot(signal, sample_rate)
 
     def plot(self, sig, sample_rate):
-        mfcc_feat = mfcc(sig, sample_rate, nfft=2048)
-        mfcc_data = np.swapaxes(mfcc_feat, 0 ,1)
+        try:
+            mfcc_feat = mfcc(sig, sample_rate, nfft=2048)
+            mfcc_data = np.swapaxes(mfcc_feat, 0 ,1)
 
-        fig, ax = plt.subplots()
-        ax = self.figure.add_subplot(111)
-        divider = make_axes_locatable(ax)
-        cax = divider.append_axes('right', size='5%', pad=0.05)
-        fig.subplots_adjust(left=0,right=1,bottom=0,top=1)
-        im = ax.imshow(mfcc_data, interpolation='nearest', origin='lower', aspect='auto')
-        ax.set_title('MFCCs')
-        ax.set_ylabel('MFCC Coefficients')
-        ax.set_xlabel('Time [sec*10^-2]')
-        fig.colorbar(im, cax=cax)
-        # props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
-        # ax.text(0.82, 0.9, "x = Frequency [Hz]\ny = Time [sec]", transform=ax.transAxes, fontsize=14,\
-        #     verticalalignment='top', bbox=props)
+            fig, ax = plt.subplots()
+            ax = self.figure.add_subplot(111)
+            divider = make_axes_locatable(ax)
+            cax = divider.append_axes('right', size='5%', pad=0.05)
+            fig.subplots_adjust(left=0,right=1,bottom=0,top=1)
+            im = ax.imshow(mfcc_data, interpolation='nearest', origin='lower', aspect='auto')
+            ax.set_title('MFCCs')
+            ax.set_ylabel('MFCC Coefficients')
+            ax.set_xlabel('Time [sec*10^-2]')
+            fig.colorbar(im, cax=cax)
+        except IndexError as err:
+            print(err)
 
         self.draw()
 
