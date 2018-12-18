@@ -38,7 +38,7 @@ class Graph(FigureCanvas):
         ax = self.figure.add_subplot(111)
         ax.plot(signal)
         if self.header:
-            ax.set_title('Original Graph')
+            ax.set_title('Original Signal')
         if typ == 1:
             ax.set_xlabel('Sample')
             ax.set_ylabel('Amplitude')

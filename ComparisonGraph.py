@@ -37,7 +37,7 @@ class ComparisonGraph(FigureCanvas):
         ax = self.figure.add_subplot(111)
         ax.plot(signal_1, label="Original")
         ax.plot(signal_2, label="Segmented")
-        ax.set_title('Original / Segmented Graph')
+        ax.set_title('Original / Segmented Signals')
         ax.set_xlabel('Sample')
         ax.set_ylabel('Amplitude')
         ax.legend()
