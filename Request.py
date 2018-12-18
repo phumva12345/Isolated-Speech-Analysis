@@ -3,12 +3,13 @@ import datetime
 id = 1
 
 class Request:
-    def __init__(self, file_name):
+    def __init__(self, file_name, word):
         global id
         self.id = '{:06d}'.format(id)
         self.date = datetime.datetime.now().strftime('%Y-%m-%d')
         self.time = datetime.datetime.now().strftime('%H:%M:%S')
         self.file_name = file_name
+        self.word = word
         id += 1
 
     def getDate(self):
@@ -22,3 +23,6 @@ class Request:
 
     def getID(self):
         return self.id
+
+    def getWord(self):
+        return self.word

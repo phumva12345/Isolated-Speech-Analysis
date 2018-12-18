@@ -99,10 +99,10 @@ class ISA_UI(QMainWindow):
         self.textEdit = form.findChild(QTextEdit,"textEdit")
         self.textEdit.setReadOnly(True)
 
-        self.update_request('robot-1.wav')
-        self.update_request('robot-2.wav')
-        self.update_request('robot-3.wav')
-        self.update_request('robot-4.wav')
+        self.update_request('robot-1.wav, robot')
+        self.update_request('robot-2.wav, robot')
+        self.update_request('robot-3.wav, robot')
+        self.update_request('robot-4.wav, robot')
 
     def play(self):
         QtMultimedia.QSound.play(self.current_req.getFileName())
@@ -161,11 +161,13 @@ class ISA_UI(QMainWindow):
         text = ""
         spf = wave.open(req.getFileName(),'r')
 
-        text += "<b>Channel:\t\t</b>"
+        text += "<b>Word:</b>  " + req.getWord()
+        text += "<br/><br/><b>Channel:\t\t</b>"
         if spf.getnchannels() == 1:
             text += "Mono"
         else:
             text += "Stereo"
+
         text += "<br/><br/><b>Sampling rate:</b>  " + str(spf.getframerate()) + " Hz"
         text += "<br/><br/><b>Sample:</b>  " + str(spf.getnframes()) + " sample(s)"
         text += "<br/><br/><b>Time Duration:</b>  " + str("{0:.2f} second(s)".format(spf.getnframes() / spf.getframerate()))
@@ -260,8 +262,9 @@ class ISA_UI(QMainWindow):
         sample_rate, signal = PreProcessing().getAllProcess(req.getFileName(), threshold)
         self.signals[req.getID()] = ProcessedSignal(signal, sample_rate)
 
-    def update_request(self, file_name):
-        req = Request(file_name)
+    def update_request(self, request):
+        filename, word = request.split(',')
+        req = Request(filename, word)
         self.current_req = req
         self.update_text_edit(req)
         self.update_list_widget(req)
