@@ -103,6 +103,11 @@ class ISA_UI(QMainWindow):
         self.update_request('robot-2.wav, robot')
         self.update_request('robot-3.wav, robot')
         self.update_request('robot-4.wav, robot')
+        # self.update_request('isw_2M_jealous.wav, jealous')
+        # self.update_request('isw_2M_mushroom.wav, mushroom')
+        # self.update_request('isw_2M_palace.wav, palace')
+        # self.update_request('isw_2M_spider.wav, spider')
+        # self.update_request('isw_2M_zipper.wav, zipper')
 
     def play(self):
         QtMultimedia.QSound.play(self.current_req.getFileName())
@@ -268,7 +273,7 @@ class ISA_UI(QMainWindow):
         self.current_req = req
         self.update_text_edit(req)
         self.update_list_widget(req)
-        self.process_request(req)
+        self.process_request(req, threshold=self.spin_box.value())
         self.update_graph_layout(req)
 
 def main():

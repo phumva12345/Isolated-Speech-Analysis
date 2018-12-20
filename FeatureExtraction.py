@@ -54,7 +54,8 @@ class FeatureExtraction:
             new_s = []
             for j in range(cols):
                 new_s.append(signal[j][i])
-            max_cols.append(heapq.nlargest(6, range(len(new_s)), key=new_s.__getitem__)[n])
+            sorted_new_s = heapq.nlargest(6, range(len(new_s)), key=new_s.__getitem__)
+            max_cols.append(sorted_new_s[min(len(sorted_new_s)-1, n)])
         for i in range(rows):
             new_s = []
             for j in range(cols):
