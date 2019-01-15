@@ -4,9 +4,11 @@ from PySide2.QtUiTools import *
 from PySide2.QtWidgets import *
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+
 from matplotlib.figure import Figure
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import matplotlib
+
 import matplotlib.pyplot as plt
 
 from scipy import signal
@@ -63,6 +65,7 @@ class Spectrogram(FigureCanvas):
             ax.set_xlabel('Time [sec]')
         except ValueError as err:
             print(err)
+
 
         self.draw()
 

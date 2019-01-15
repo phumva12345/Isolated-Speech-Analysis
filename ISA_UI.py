@@ -7,6 +7,7 @@ from Graph import *
 from Spectrogram import *
 from Request import *
 from QCustomWidget import *
+from server import *
 from scipy.io import wavfile as wav
 from MySignal import *
 from PreProcessing import *
@@ -16,7 +17,7 @@ from ComparisonGraph import *
 from ProcessedSignal import *
 
 class ISA_UI(QMainWindow):
-
+    
     def __init__(self, parent = None):
         # Init attributes
         QMainWindow.__init__(self, None)
@@ -275,11 +276,18 @@ class ISA_UI(QMainWindow):
         self.update_list_widget(req)
         self.process_request(req, threshold=self.spin_box.value())
         self.update_graph_layout(req)
+    def test_request(self,file_name):
+        print(file_name)
+    def test(self, file_name):
+        self.textEdit.setText(file_name)
 
 def main():
     app = QApplication(sys.argv)
     w = ISA_UI()
+    fla = FlaskThread(w)
+    
     w.show()
+    fla.start()
     return app.exec_()
 
 if __name__ == "__main__":
