@@ -17,12 +17,11 @@ import wave
 from PreProcessing import *
 
 
-class Graph(FigureCanvas):
+class ComparisonGraph(FigureCanvas):
 
-    def __init__(self, signal, type=1, header=False, parent=None, width=5, height=4, dpi=80):
+    def __init__(self, signal_1, signal_2, type=1, parent=None, width=5, height=4, dpi=80):
         fig = Figure(figsize=(width, height), dpi=dpi)
         self.axes = fig.add_subplot(111)
-        self.header = header
 
         FigureCanvas.__init__(self, fig)
         self.setParent(parent)
@@ -32,22 +31,16 @@ class Graph(FigureCanvas):
                 QSizePolicy.Expanding)
         FigureCanvas.updateGeometry(self)
 
-        self.plot(signal, type)
+        self.plot(signal_1, signal_2)
 
-    def plot(self, signal, typ):
+    def plot(self, signal_1, signal_2):
         ax = self.figure.add_subplot(111)
-        ax.plot(signal)
-        if self.header:
-            ax.set_title('Original Signal')
-        if typ == 1:
-            ax.set_xlabel('Sample')
-            ax.set_ylabel('Amplitude')
-        elif typ == 2:
-            ax.set_xlabel('Window Indexes')
-            ax.set_ylabel('SD')
-        elif typ == 3:
-            ax.set_xlabel('Window Indexes')
-            ax.set_ylabel('Speech / Non-Speech')
+        ax.plot(signal_1, label="Original")
+        ax.plot(signal_2, label="Segmented")
+        ax.set_title('Original / Segmented Signals')
+        ax.set_xlabel('Sample')
+        ax.set_ylabel('Amplitude')
+        ax.legend()
         self.draw()
 
     def close(self):

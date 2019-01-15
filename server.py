@@ -38,6 +38,7 @@ def update_request():
     if 'file' not in request.files:
         return "No file"
     file = request.files['file']
+    word = request.form.get('word')
 
     # if user does not select file, browser also
     # submit a empty part without filename
@@ -48,8 +49,10 @@ def update_request():
         file_name = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], file_name))
 
+        w.signal.sigStr.emit(file_name + ',' + str(word))
+
         w.signal.sigStr.emit(file_name)
-        return "success"
+
 
 
 
